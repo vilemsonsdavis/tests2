@@ -47,6 +47,8 @@ public class Kalkulators extends javax.swing.JPanel {
         reiz = new javax.swing.JButton();
         dalit = new javax.swing.JButton();
         clear = new javax.swing.JButton();
+        darbibaText = new javax.swing.JTextField();
+        equalButton = new javax.swing.JButton();
 
         one.setText("1");
         one.addActionListener(new java.awt.event.ActionListener() {
@@ -118,6 +120,7 @@ public class Kalkulators extends javax.swing.JPanel {
             }
         });
 
+        lauks1.setBackground(new java.awt.Color(51, 0, 255));
         lauks1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lauks1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -165,6 +168,21 @@ public class Kalkulators extends javax.swing.JPanel {
             }
         });
 
+        darbibaText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        darbibaText.setText("Ievadi darbibu manuali seit!");
+        darbibaText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                darbibaTextActionPerformed(evt);
+            }
+        });
+
+        equalButton.setText("Spied TE!");
+        equalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                equalButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,7 +190,25 @@ public class Kalkulators extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lauks1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(resultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(result_lauks)
+                                .addGap(18, 18, 18)
+                                .addComponent(resultLauks))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(darbibaText, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(equalButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(seven)
@@ -186,7 +222,7 @@ public class Kalkulators extends javax.swing.JPanel {
                             .addComponent(eight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(five, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(zero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(equals, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(equals))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(three)
@@ -198,27 +234,20 @@ public class Kalkulators extends javax.swing.JPanel {
                                     .addComponent(dalit)
                                     .addComponent(minus)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
+                        .addGap(24, 24, 24)
                         .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(87, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lauks1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(resultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(result_lauks)
-                        .addGap(18, 18, 18)
-                        .addComponent(resultLauks)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(72, 72, 72))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(darbibaText, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(equalButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lauks1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,7 +281,7 @@ public class Kalkulators extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(equals)
                             .addComponent(dalit))))
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(resultLabel)
                     .addComponent(result_lauks)
@@ -261,7 +290,7 @@ public class Kalkulators extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    String virkne = "", skaitlaVirkne = "";
+    String virkne = "", skaitlaVirkne = ""; //pirmajaa virknee saglabasim skaitlus un darbibas, lai tos paraditu, ar otras palidzibu iegusim skaitlus
     char symbol;
     int skaitlis1, skaitlis2, result = 0;
     boolean pirmais = true, otrsSimbols = false;
@@ -335,7 +364,7 @@ public class Kalkulators extends javax.swing.JPanel {
     }//GEN-LAST:event_plusActionPerformed
 
     private void minusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minusActionPerformed
-        
+
         lauks1.setText(virkne + "-");
         randomDarbibas();
         symbol = '-';
@@ -348,15 +377,15 @@ public class Kalkulators extends javax.swing.JPanel {
     }//GEN-LAST:event_equalsActionPerformed
 
     private void reizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reizActionPerformed
-        
-        lauks1.setText(virkne + "*"); 
+
+        lauks1.setText(virkne + "*");
         randomDarbibas();
         symbol = '*';
         virkne += "*";
     }//GEN-LAST:event_reizActionPerformed
 
     private void dalitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dalitActionPerformed
-        
+
         lauks1.setText(virkne + "/");
         randomDarbibas();
         virkne += "/";
@@ -367,10 +396,56 @@ public class Kalkulators extends javax.swing.JPanel {
         result = 0;
         skaitlaVirkne = "";
         virkne = "";
-        
+
         lauks1.setText(virkne);
         resultLauks.setText("");
     }//GEN-LAST:event_clearActionPerformed
+
+    private void darbibaTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_darbibaTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_darbibaTextActionPerformed
+
+    private void equalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equalButtonActionPerformed
+
+        String virkne2 = darbibaText.getText();
+        int skaitlis3, skaitlis4, result2 = 0;
+        String skaitlaVirkne2 = "";
+        boolean pirmais2 = true;
+        char symbol2 = 0;
+
+        Apreikini apr2 = new Apreikini();
+
+        for (int i = 0; i < virkne2.length(); i++) {
+
+            if (virkne2.charAt(i) > 47 && virkne2.charAt(i) < 58) { // 8-4+2-5+3+5
+                skaitlaVirkne2 += virkne2.charAt(i);
+                if (i==virkne2.length()-1){
+                    skaitlis4 = Integer.parseInt(skaitlaVirkne2);
+                    skaitlis3 = result2;
+                    result2 = apr2.Equals (skaitlis3, skaitlis4, symbol2, result2);
+                    break;
+                }
+            }
+            if (virkne2.charAt(i) == '+' || virkne2.charAt(i) == '-' || virkne2.charAt(i) == '*' || virkne2.charAt(i) == '/') {
+                if (pirmais2) {
+                    result2 = Integer.parseInt(skaitlaVirkne2);
+                    skaitlaVirkne2 = "";
+                    symbol2 = virkne2.charAt(i);
+                    pirmais2=false;
+                }else{
+                    skaitlis4 = Integer.parseInt(skaitlaVirkne2);
+                    skaitlis3 = result2;
+                    result2 = apr2.Equals (skaitlis3, skaitlis4, symbol2, result2);
+                    symbol2 = virkne2.charAt(i);
+                    skaitlaVirkne2 = "";
+                }
+            }
+
+        }
+        
+        resultLauks.setText(result2+ "");
+
+    }//GEN-LAST:event_equalButtonActionPerformed
 
     public void vienads() {
 
@@ -385,13 +460,13 @@ public class Kalkulators extends javax.swing.JPanel {
         skaitlaVirkne = "";
         otrsSimbols = false;
     }
-    
-    public void randomDarbibas(){
-        if (otrsSimbols) { 
+
+    public void randomDarbibas() {
+        if (otrsSimbols) { //booleans, kas parbauda vai 
             vienads();
         } else {
             if (pirmais) {
-                skaitlis1 = Integer.parseInt(skaitlaVirkne); 
+                skaitlis1 = Integer.parseInt(skaitlaVirkne);
                 pirmais = false;
                 result = skaitlis1;
             } else {
@@ -406,7 +481,9 @@ public class Kalkulators extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clear;
     private javax.swing.JButton dalit;
+    private javax.swing.JTextField darbibaText;
     private javax.swing.JButton eight;
+    private javax.swing.JButton equalButton;
     private javax.swing.JButton equals;
     private javax.swing.JButton five;
     private javax.swing.JButton four;
