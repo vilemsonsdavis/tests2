@@ -1,47 +1,64 @@
 package javagame;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Random;
+import java.io.InputStream;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 public class JavaGame extends JFrame implements Runnable {
 
+    // JFrame gameFrame = new JFrame();
+    JPanel gamePanel = new JPanel();
+
     int x, y, xDirection, yDirection, score = 0;
+    int field[][] = new int[21][20];
+    boolean pressedA = false, pressedW = false, pressedS = false, pressedD = false;
+    boolean win = false;
+    String vards = "";
+
+    Image player;
+    ImageIcon left, right;
+  
+
+    public static final String gameSong = "C://Users//Davis//Desktop//testsGH//tests2//JavaGame//sneaky.mp3";
+
     private Image dbImage;
     private Graphics dbg;
-    private JButton changeFrame;
-
-    Random rand = new Random();
-    int x2 = rand.nextInt(480) + 1;
-    int y2 = rand.nextInt(480) + 1;
-    int x3 = rand.nextInt(480) + 1;
-    int y3 = rand.nextInt(480) + 1;
-    int x4 = rand.nextInt(480) + 1;
-    int y4 = rand.nextInt(480) + 1;
-
-    Image face, ballzy;
-    ImageIcon i = new ImageIcon("C://Users//Davis//Desktop//testsGH/tests2//JavaGame//src//javagame//maxisLeft.png");
-    ImageIcon k = new ImageIcon("C://Users//Davis//Desktop//testsGH/tests2//JavaGame//src//javagame//maxisRight.png");
-    ImageIcon ball = new ImageIcon("C://Users//Davis//Desktop//testsGH/tests2//JavaGame//src//javagame//ball.png");
 
     public void run() {
         try {
             while (true) {
-
+                if (checkWin()) {
+                    win = true;
+                }
+                repaint();
                 move();
-                ballMove();
-                ballEaten();
-                Thread.sleep(5); //kontrole kusteshanas atrumu
+                Thread.sleep(8); //kontrole kusteshanas atrumu
             }
         } catch (Exception e) {
             System.out.println("ERROR!");
+        }
+    }
+
+    private void playSound() {
+        try {
+            // get the sound file as a resource out of my jar file;
+            // the sound file must be in the same directory as this class file.
+            // the input stream portion of this recipe comes from a javaworld.com article.
+            InputStream inputStream = getClass().getResourceAsStream(gameSong);
+            AudioStream audioStream = new AudioStream(inputStream);
+            AudioPlayer.player.start(audioStream);
+        } catch (Exception e) {
+            // a special way i'm handling logging in this application
+            System.out.println("fuck uu");
         }
     }
 
@@ -49,8 +66,9 @@ public class JavaGame extends JFrame implements Runnable {
         x += xDirection;
         y += yDirection;
 
-        if (x <= 0) {
-            x = 0;
+        //Borders
+        if (x <= 25) {
+            x = 25;
         }
         if (x >= 450) {
             x = 450;
@@ -58,8 +76,237 @@ public class JavaGame extends JFrame implements Runnable {
         if (y <= 25) {
             y = 25;
         }
-        if (y >= 450) {
-            y = 450;
+        if (y >= 500) {
+            y = 500;
+        }
+
+        wallCollision();
+
+    }
+
+    public void makeGameField() {
+
+        for (int i = 0; i < 20; i++) {
+            field[1][i] = 1;
+        }
+        for (int i = 0; i < 20; i++) {
+            field[20][i] = 1;
+        }
+        for (int i = 1; i < 20; i++) {
+            field[i][0] = 1;
+        }
+        for (int i = 1; i < 20; i++) {
+            field[i][19] = 1;
+        }
+        //start and end
+        field[1][10] = 0;
+        field[20][16] = 0;
+        //1st line
+        field[2][9] = 1;
+        field[2][11] = 1;
+        //2ndline
+        field[3][2] = 1;
+        field[3][3] = 1;
+        field[3][4] = 1;
+        field[3][5] = 1;
+        field[3][6] = 1;
+        field[3][8] = 1;
+        field[3][9] = 1;
+        field[3][13] = 1;
+        field[3][14] = 1;
+        field[3][15] = 1;
+        field[3][17] = 1;
+        field[3][18] = 1;
+        //3rd line
+        field[4][2] = 1;
+        field[4][6] = 1;
+        field[4][11] = 1;
+        field[4][12] = 1;
+        field[4][13] = 1;
+        field[4][15] = 1;
+        field[4][17] = 1;
+        //4th line
+        field[5][2] = 1;
+        field[5][4] = 1;
+        field[5][6] = 1;
+        field[5][7] = 1;
+        field[5][8] = 1;
+        field[5][9] = 1;
+        field[5][11] = 1;
+        //5th line
+        field[6][2] = 1;
+        field[6][4] = 1;
+        field[6][11] = 1;
+        field[6][12] = 1;
+        field[6][13] = 1;
+        field[6][14] = 1;
+        field[6][15] = 1;
+        field[6][16] = 1;
+        field[6][17] = 1;
+        //6th line
+        field[7][2] = 1;
+        field[7][3] = 1;
+        field[7][4] = 1;
+        field[7][5] = 1;
+        field[7][6] = 1;
+        field[7][8] = 1;
+        field[7][9] = 1;
+        field[7][10] = 1;
+        field[7][11] = 1;
+        field[7][17] = 1;
+        //7h line
+        field[8][2] = 1;
+        field[8][6] = 1;
+        field[8][8] = 1;
+        field[8][9] = 1;
+        field[8][11] = 1;
+        field[8][13] = 1;
+        field[8][14] = 1;
+        field[8][15] = 1;
+        field[8][17] = 1;
+        //8th line
+        field[9][2] = 1;
+        field[9][4] = 1;
+        field[9][6] = 1;
+        field[9][8] = 1;
+        field[9][15] = 1;
+        field[9][17] = 1;
+        //9th line
+        field[10][2] = 1;
+        field[10][4] = 1;
+        field[10][5] = 1;
+        field[10][6] = 1;
+        field[10][7] = 1;
+        field[10][8] = 1;
+        field[10][9] = 1;
+        field[10][10] = 1;
+        field[10][12] = 1;
+        field[10][13] = 1;
+        field[10][15] = 1;
+        field[10][17] = 1;
+        //10th line
+        field[11][10] = 1;
+        field[11][12] = 1;
+        field[11][13] = 1;
+        field[11][15] = 1;
+        field[11][17] = 1;
+        //11thline
+        field[12][2] = 1;
+        field[12][3] = 1;
+        field[12][4] = 1;
+        field[12][6] = 1;
+        field[12][7] = 1;
+        field[12][8] = 1;
+        field[12][10] = 1;
+        field[12][13] = 1;
+        field[12][15] = 1;
+        field[12][17] = 1;
+        //12th line
+        field[13][2] = 1;
+        field[13][4] = 1;
+        field[13][6] = 1;
+        field[13][8] = 1;
+        field[13][10] = 1;
+        field[13][11] = 1;
+        field[13][12] = 1;
+        field[13][13] = 1;
+        field[13][15] = 1;
+        field[13][17] = 1;
+        //13th line
+        field[14][2] = 1;
+        field[14][8] = 1;
+        field[14][15] = 1;
+        //14th line
+        field[15][2] = 1;
+        field[15][3] = 1;
+        field[15][4] = 1;
+        field[15][5] = 1;
+        field[15][6] = 1;
+        field[15][8] = 1;
+        field[15][9] = 1;
+        field[15][10] = 1;
+        field[15][11] = 1;
+        field[15][12] = 1;
+        field[15][13] = 1;
+        field[15][14] = 1;
+        field[15][15] = 1;
+        field[15][17] = 1;
+        //15th line
+        field[16][6] = 1;
+        field[16][11] = 1;
+        field[16][17] = 1;
+        //16thline
+        field[17][1] = 1;
+        field[17][2] = 1;
+        field[17][4] = 1;
+        field[17][6] = 1;
+        field[17][7] = 1;
+        field[17][8] = 1;
+        field[17][9] = 1;
+        field[17][11] = 1;
+        field[17][13] = 1;
+        field[17][14] = 1;
+        field[17][15] = 1;
+        field[17][16] = 1;
+        field[17][17] = 1;
+        //17th line
+        field[18][2] = 1;
+        field[18][4] = 1;
+        field[18][7] = 1;
+        field[18][9] = 1;
+        field[18][11] = 1;
+        field[18][17] = 1;
+        //18yh line
+        field[19][4] = 1;
+        field[19][5] = 1;
+        field[19][11] = 1;
+        field[19][12] = 1;
+        field[19][13] = 1;
+        field[19][14] = 1;
+        field[19][15] = 1;
+        field[19][17] = 1;
+    }
+
+    public void wallCollision() {
+        if (field[y / 25][x / 25] == 1) {
+            if (pressedA && pressedW) {
+                x = x + 1;
+                y = y + 1;
+            } else if (pressedW) {
+                y = y + 1;
+            } else if (pressedA) {
+                x = x + 1;
+            }
+        }
+        if (field[y / 25][(x + 19) / 25] == 1) {
+            if (pressedD && pressedW) {
+                x = x - 1;
+                y = y + 1;
+            } else if (pressedW) {
+                y = y + 1;
+            } else if (pressedD) {
+                x = x - 1;
+            }
+        }
+        if (field[(y + 19) / 25][x / 25] == 1) {
+            if (pressedA && pressedS) {
+                x = x + 1;
+                y = y - 1;
+            } else if (pressedS) {
+                y = y - 1;
+            } else if (pressedA) {
+                x = x + 1;
+            }
+        }
+        if (field[(y + 19) / 25][(x + 19) / 25] == 1) {
+            if (pressedD && pressedS) {
+                x = x - 1;
+                y = y - 1;
+            } else if (pressedS) {
+                y = y - 1;
+            } else if (pressedD) {
+                x = x - 1;
+            }
         }
     }
 
@@ -71,23 +318,34 @@ public class JavaGame extends JFrame implements Runnable {
         yDirection = yDir;
     }
 
-    public class AL extends KeyAdapter {
+    public boolean checkWin() {
+        if (y >= 500 && y <= 525 && x >= 400 && x <= 425) {
+            return true;
+        }
+        return false;
+    }
+
+    public class ActionListener extends KeyAdapter {
 
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
             if (keyCode == e.VK_A) {
                 setXDir(-1);
-                face = i.getImage();
+                player = left.getImage();
+                pressedA = true;
             }
             if (keyCode == e.VK_D) {
                 setXDir(+1);
-                face = k.getImage();
+                player = right.getImage();
+                pressedD = true;
             }
             if (keyCode == e.VK_W) {
                 setYDir(-1);
+                pressedW = true;
             }
             if (keyCode == e.VK_S) {
                 setYDir(+1);
+                pressedS = true;
             }
         }
 
@@ -95,199 +353,74 @@ public class JavaGame extends JFrame implements Runnable {
             int keyCode = e.getKeyCode();
             if (keyCode == e.VK_A) {
                 setXDir(0);
+                pressedA = false;
             }
             if (keyCode == e.VK_D) {
                 setXDir(0);
+                pressedD = false;
             }
             if (keyCode == e.VK_W) {
                 setYDir(0);
+                pressedW = false;
             }
             if (keyCode == e.VK_S) {
                 setYDir(0);
+                pressedS = false;
             }
         }
     }
 
-    public JavaGame() {
-        
-        face = i.getImage();
-        ballzy = ball.getImage();
+    public JavaGame(ImageIcon imageLeft, ImageIcon imageRight, String vards) {
+        this.vards = vards;
+        left = imageLeft;
+        right = imageRight;
+        player = imageLeft.getImage();
 
         //Game properties
-        addKeyListener(new AL());
-        
-        setTitle("Maxis eed bumbinjas by Davis Vilemsons");
-        setSize(500, 500);
+        setTitle("Labirints");
+        setSize(500, 725);
         setResizable(false);
-        setVisible(true);
-        setBackground(Color.RED);
+        setBackground(Color.lightGray);
+        setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        addKeyListener(new ActionListener());
 
-        x = 50;
-        y = 50;
+        gamePanel.setSize(500, 725);
+        add(gamePanel);
+        gamePanel.setLayout(null);
+        gamePanel.setVisible(true);
+
+        makeGameField();
+        playSound();
+
+        x = 250;
+        y = 25;
+
     }
 
+    @Override
     public void paint(Graphics g) {
-
+        PaintScreen p = new PaintScreen(player, x, y, gamePanel, win, vards, field);
         dbImage = createImage(getWidth(), getHeight());
         dbg = dbImage.getGraphics();
-        paintComponent(dbg);
-        g.drawImage(dbImage, 0, 0, this);
+        p.paintComponent(dbg);
+        g.drawImage(dbImage, 0, 0, gamePanel);
     }
 
-    public void paintComponent(Graphics g) {
-
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("default", Font.BOLD, 16));
-        g.drawImage(face, x, y, this);
-        g.drawImage(ballzy, x2, y2, this);
-        g.drawImage(ballzy, x3, y3, this);
-        g.drawImage(ballzy, x4, y4, this);
-        g.drawString("Maxis ir apēdis " + score + " bumbiņas!", 280, 50);
-        g.drawLine(50, 50, 50, 50);
-
-        repaint();
-
-    }
-
-    public void ballEaten() {
-        if (((x + 50 >= x2 && x + 50 <= x2 + 20) || (x <= x2 + 20 && x >= x2)) && ((y <= y2 + 20 && y >= y2) || (y + 50 >= y2 && y + 50 <= y2 + 20))) {
-            Random rand2 = new Random();
-            x2 = rand2.nextInt(470) + 1;
-            y2 = rand2.nextInt(480) + 1;
-            score++;
-        }
-
-        if (((x + 50 >= x3 && x + 50 <= x3 + 20) || (x <= x3 + 20 && x >= x3)) && ((y <= y3 + 20 && y >= y3) || (y + 50 >= y3 && y + 50 <= y3 + 20))) {
-            Random rand3 = new Random();
-            x3 = rand3.nextInt(470) + 1;
-            y3 = rand3.nextInt(470) + 1;
-            score++;
-        }
-
-        if (((x + 50 >= x4 && x + 50 <= x4 + 20) || (x <= x4 + 20 && x >= x4)) && ((y <= y4 + 20 && y >= y4) || (y + 50 >= y4 && y + 50 <= y4 + 20))) {
-            Random rand4 = new Random();
-            x4 = rand4.nextInt(470) + 1;
-            y4 = rand4.nextInt(470) + 1;
-            score++;
-        }
-
-    }
-
-    boolean rightTouched = false;
-    boolean right2Touched = false;
-    boolean right3Touched = false;
-    boolean down2Touched = false;
-    boolean down3Touched = false;
-    boolean downTouched = false;
-
-    public void ballMove() {
-
-        if (x2 == 480) {
-            rightTouched = true;
-        } else if (x2 == 0) {
-            rightTouched = false;
-        }
-
-        if (rightTouched) {
-            x2--;
-        } else {
-            x2++;
-        }
-        if (x3 == 480) {
-            right2Touched = true;
-        } else if (x3 == 0) {
-            right2Touched = false;
-        }
-
-        if (right2Touched) {
-            x3--;
-        } else {
-            x3++;
-        }
-        if (x4 == 480) {
-            right3Touched = true;
-        } else if (x4 == 0) {
-            right3Touched = false;
-        }
-
-        if (right3Touched) {
-            x4--;
-        } else {
-            x4++;
-        }
-
-        if (y2 == 480) {
-            downTouched = true;
-        } else if (y2 == 20) {
-            downTouched = false;
-        }
-
-        if (downTouched) {
-            y2--;
-        } else {
-            y2++;
-        }
-        if (y3 == 480) {
-            down2Touched = true;
-        } else if (y3 == 20) {
-            down2Touched = false;
-        }
-
-        if (down2Touched) {
-            y3--;
-        } else {
-            y3++;
-        }
-        if (y4 == 480) {
-            down3Touched = true;
-        } else if (y4 == 20) {
-            down3Touched = false;
-        }
-
-        if (down3Touched) {
-            y4--;
-        } else {
-            y4++;
-        }
-
-    }
-
-//    public void dogAutoMove(){
-//        
-//        int distance[] = new int[11];
-//        int closest = y4-y+50, cPos=0;
-//        
-//        distance[0]= x-x2+20;
-//        distance[1]= x-x3+20;
-//        distance[2]= x-x4+20;
-//        distance[3]= x2-x+50;
-//        distance[4]= x3-x+50;
-//        distance[5]= x4-x+50;
-//        distance[6]= y-y2+20;
-//        distance[7]= y-y3+20;
-//        distance[8]= y-y4+20;
-//        distance[9]= y2-y+50;
-//        distance[10]= y3-y+50;
-//        
-//        for(int i=0; i<11;i++){
-//            if (closest>=distance[i]){
-//                closest=distance[i];
-//                cPos = i;
-//            }
-//        }
-//        
-//        int disX, disY;
-//        
-//        switch (cPos){
-//            case 1:
-//                int 
-//        
-//        }
-//        
-//    }
     public static void main(String[] args) {
 
-        JavaGameStart jgS = new JavaGameStart();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+
+                JFrame frame = new JFrame();
+                frame.setTitle("Labirints");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.getContentPane().add(new GameStart());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
     }
 }
