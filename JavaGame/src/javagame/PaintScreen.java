@@ -80,6 +80,11 @@ public class PaintScreen {
                 }
             }
         }
+        for (int i=0; i<21;i++){
+            for (int k=0;k<9;k++){
+                g.drawImage(grass,i*25,k*25+550,game);
+            }
+        }
         
         g.setColor(Color.RED);
         g.setFont(new Font("default", Font.BOLD, 20));
