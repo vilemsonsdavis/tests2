@@ -5,13 +5,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.InputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
 
 public class JavaGame extends JFrame implements Runnable {
 
@@ -19,16 +16,15 @@ public class JavaGame extends JFrame implements Runnable {
     JPanel gamePanel = new JPanel();
 
     int x, y, xDirection, yDirection, score = 0;
-    int field[][] = new int[21][20];
+    int field[][] = new int[19][19];
     boolean pressedA = false, pressedW = false, pressedS = false, pressedD = false;
     boolean win = false;
     String vards = "";
+    
+    GameField maze;
 
     Image player;
     ImageIcon left, right;
-  
-
-    public static final String gameSong = "C://Users//Davis//Desktop//testsGH//tests2//JavaGame//sneaky.mp3";
 
     private Image dbImage;
     private Graphics dbg;
@@ -48,20 +44,6 @@ public class JavaGame extends JFrame implements Runnable {
         }
     }
 
-    private void playSound() {
-        try {
-            // get the sound file as a resource out of my jar file;
-            // the sound file must be in the same directory as this class file.
-            // the input stream portion of this recipe comes from a javaworld.com article.
-            InputStream inputStream = getClass().getResourceAsStream(gameSong);
-            AudioStream audioStream = new AudioStream(inputStream);
-            AudioPlayer.player.start(audioStream);
-        } catch (Exception e) {
-            // a special way i'm handling logging in this application
-            System.out.println("fuck uu");
-        }
-    }
-
     public void move() {
         x += xDirection;
         y += yDirection;
@@ -70,14 +52,17 @@ public class JavaGame extends JFrame implements Runnable {
         if (x <= 25) {
             x = 25;
         }
-        if (x >= 450) {
-            x = 450;
+        if (x >= 477) {
+            x = 477;
         }
-        if (y <= 25) {
-            y = 25;
+        if (y <= 50) {
+            y = 50;
         }
-        if (y >= 500) {
-            y = 500;
+        if (y >= 501 && x<475) {
+            y = 501;
+        }
+        if (y>=525){
+            y=525;
         }
 
         wallCollision();
@@ -85,190 +70,195 @@ public class JavaGame extends JFrame implements Runnable {
     }
 
     public void makeGameField() {
+        maze = new GameField(field);
+        field =maze.maze;
+       
 
-        for (int i = 0; i < 20; i++) {
-            field[1][i] = 1;
-        }
-        for (int i = 0; i < 20; i++) {
-            field[20][i] = 1;
-        }
-        for (int i = 1; i < 20; i++) {
-            field[i][0] = 1;
-        }
-        for (int i = 1; i < 20; i++) {
-            field[i][19] = 1;
-        }
-        //start and end
-        field[1][10] = 0;
-        field[20][16] = 0;
-        //1st line
-        field[2][9] = 1;
-        field[2][11] = 1;
-        //2ndline
-        field[3][2] = 1;
-        field[3][3] = 1;
-        field[3][4] = 1;
-        field[3][5] = 1;
-        field[3][6] = 1;
-        field[3][8] = 1;
-        field[3][9] = 1;
-        field[3][13] = 1;
-        field[3][14] = 1;
-        field[3][15] = 1;
-        field[3][17] = 1;
-        field[3][18] = 1;
-        //3rd line
-        field[4][2] = 1;
-        field[4][6] = 1;
-        field[4][11] = 1;
-        field[4][12] = 1;
-        field[4][13] = 1;
-        field[4][15] = 1;
-        field[4][17] = 1;
-        //4th line
-        field[5][2] = 1;
-        field[5][4] = 1;
-        field[5][6] = 1;
-        field[5][7] = 1;
-        field[5][8] = 1;
-        field[5][9] = 1;
-        field[5][11] = 1;
-        //5th line
-        field[6][2] = 1;
-        field[6][4] = 1;
-        field[6][11] = 1;
-        field[6][12] = 1;
-        field[6][13] = 1;
-        field[6][14] = 1;
-        field[6][15] = 1;
-        field[6][16] = 1;
-        field[6][17] = 1;
-        //6th line
-        field[7][2] = 1;
-        field[7][3] = 1;
-        field[7][4] = 1;
-        field[7][5] = 1;
-        field[7][6] = 1;
-        field[7][8] = 1;
-        field[7][9] = 1;
-        field[7][10] = 1;
-        field[7][11] = 1;
-        field[7][17] = 1;
-        //7h line
-        field[8][2] = 1;
-        field[8][6] = 1;
-        field[8][8] = 1;
-        field[8][9] = 1;
-        field[8][11] = 1;
-        field[8][13] = 1;
-        field[8][14] = 1;
-        field[8][15] = 1;
-        field[8][17] = 1;
-        //8th line
-        field[9][2] = 1;
-        field[9][4] = 1;
-        field[9][6] = 1;
-        field[9][8] = 1;
-        field[9][15] = 1;
-        field[9][17] = 1;
-        //9th line
-        field[10][2] = 1;
-        field[10][4] = 1;
-        field[10][5] = 1;
-        field[10][6] = 1;
-        field[10][7] = 1;
-        field[10][8] = 1;
-        field[10][9] = 1;
-        field[10][10] = 1;
-        field[10][12] = 1;
-        field[10][13] = 1;
-        field[10][15] = 1;
-        field[10][17] = 1;
-        //10th line
-        field[11][10] = 1;
-        field[11][12] = 1;
-        field[11][13] = 1;
-        field[11][15] = 1;
-        field[11][17] = 1;
-        //11thline
-        field[12][2] = 1;
-        field[12][3] = 1;
-        field[12][4] = 1;
-        field[12][6] = 1;
-        field[12][7] = 1;
-        field[12][8] = 1;
-        field[12][10] = 1;
-        field[12][13] = 1;
-        field[12][15] = 1;
-        field[12][17] = 1;
-        //12th line
-        field[13][2] = 1;
-        field[13][4] = 1;
-        field[13][6] = 1;
-        field[13][8] = 1;
-        field[13][10] = 1;
-        field[13][11] = 1;
-        field[13][12] = 1;
-        field[13][13] = 1;
-        field[13][15] = 1;
-        field[13][17] = 1;
-        //13th line
-        field[14][2] = 1;
-        field[14][8] = 1;
-        field[14][15] = 1;
-        //14th line
-        field[15][2] = 1;
-        field[15][3] = 1;
-        field[15][4] = 1;
-        field[15][5] = 1;
-        field[15][6] = 1;
-        field[15][8] = 1;
-        field[15][9] = 1;
-        field[15][10] = 1;
-        field[15][11] = 1;
-        field[15][12] = 1;
-        field[15][13] = 1;
-        field[15][14] = 1;
-        field[15][15] = 1;
-        field[15][17] = 1;
-        //15th line
-        field[16][6] = 1;
-        field[16][11] = 1;
-        field[16][17] = 1;
-        //16thline
-        field[17][1] = 1;
-        field[17][2] = 1;
-        field[17][4] = 1;
-        field[17][6] = 1;
-        field[17][7] = 1;
-        field[17][8] = 1;
-        field[17][9] = 1;
-        field[17][11] = 1;
-        field[17][13] = 1;
-        field[17][14] = 1;
-        field[17][15] = 1;
-        field[17][16] = 1;
-        field[17][17] = 1;
-        //17th line
-        field[18][2] = 1;
-        field[18][4] = 1;
-        field[18][7] = 1;
-        field[18][9] = 1;
-        field[18][11] = 1;
-        field[18][17] = 1;
-        //18yh line
-        field[19][4] = 1;
-        field[19][5] = 1;
-        field[19][11] = 1;
-        field[19][12] = 1;
-        field[19][13] = 1;
-        field[19][14] = 1;
-        field[19][15] = 1;
-        field[19][17] = 1;
+//        for (int i = 0; i < 20; i++) {
+//            field[1][i] = 1;
+//        }
+//        for (int i = 0; i < 20; i++) {
+//            field[20][i] = 1;
+//        }
+//        for (int i = 1; i < 20; i++) {
+//            field[i][0] = 1;
+//        }
+//        for (int i = 1; i < 20; i++) {
+//            field[i][19] = 1;
+//        }
+//        //start and end
+//        field[1][10] = 0;
+//        field[20][16] = 0;
+//        //1st line
+//        field[2][9] = 1;
+//        field[2][11] = 1;
+//        //2ndline
+//        field[3][2] = 1;
+//        field[3][3] = 1;
+//        field[3][4] = 1;
+//        field[3][5] = 1;
+//        field[3][6] = 1;
+//        field[3][8] = 1;
+//        field[3][9] = 1;
+//        field[3][13] = 1;
+//        field[3][14] = 1;
+//        field[3][15] = 1;
+//        field[3][17] = 1;
+//        field[3][18] = 1;
+//        //3rd line
+//        field[4][2] = 1;
+//        field[4][6] = 1;
+//        field[4][11] = 1;
+//        field[4][12] = 1;
+//        field[4][13] = 1;
+//        field[4][15] = 1;
+//        field[4][17] = 1;
+//        //4th line
+//        field[5][2] = 1;
+//        field[5][4] = 1;
+//        field[5][6] = 1;
+//        field[5][7] = 1;
+//        field[5][8] = 1;
+//        field[5][9] = 1;
+//        field[5][11] = 1;
+//        //5th line
+//        field[6][2] = 1;
+//        field[6][4] = 1;
+//        field[6][11] = 1;
+//        field[6][12] = 1;
+//        field[6][13] = 1;
+//        field[6][14] = 1;
+//        field[6][15] = 1;
+//        field[6][16] = 1;
+//        field[6][17] = 1;
+//        //6th line
+//        field[7][2] = 1;
+//        field[7][3] = 1;
+//        field[7][4] = 1;
+//        field[7][5] = 1;
+//        field[7][6] = 1;
+//        field[7][8] = 1;
+//        field[7][9] = 1;
+//        field[7][10] = 1;
+//        field[7][11] = 1;
+//        field[7][17] = 1;
+//        //7h line
+//        field[8][2] = 1;
+//        field[8][6] = 1;
+//        field[8][8] = 1;
+//        field[8][9] = 1;
+//        field[8][11] = 1;
+//        field[8][13] = 1;
+//        field[8][14] = 1;
+//        field[8][15] = 1;
+//        field[8][17] = 1;
+//        //8th line
+//        field[9][2] = 1;
+//        field[9][4] = 1;
+//        field[9][6] = 1;
+//        field[9][8] = 1;
+//        field[9][15] = 1;
+//        field[9][17] = 1;
+//        //9th line
+//        field[10][2] = 1;
+//        field[10][4] = 1;
+//        field[10][5] = 1;
+//        field[10][6] = 1;
+//        field[10][7] = 1;
+//        field[10][8] = 1;
+//        field[10][9] = 1;
+//        field[10][10] = 1;
+//        field[10][12] = 1;
+//        field[10][13] = 1;
+//        field[10][15] = 1;
+//        field[10][17] = 1;
+//        //10th line
+//        field[11][10] = 1;
+//        field[11][12] = 1;
+//        field[11][13] = 1;
+//        field[11][15] = 1;
+//        field[11][17] = 1;
+//        //11thline
+//        field[12][2] = 1;
+//        field[12][3] = 1;
+//        field[12][4] = 1;
+//        field[12][6] = 1;
+//        field[12][7] = 1;
+//        field[12][8] = 1;
+//        field[12][10] = 1;
+//        field[12][13] = 1;
+//        field[12][15] = 1;
+//        field[12][17] = 1;
+//        //12th line
+//        field[13][2] = 1;
+//        field[13][4] = 1;
+//        field[13][6] = 1;
+//        field[13][8] = 1;
+//        field[13][10] = 1;
+//        field[13][11] = 1;
+//        field[13][12] = 1;
+//        field[13][13] = 1;
+//        field[13][15] = 1;
+//        field[13][17] = 1;
+//        //13th line
+//        field[14][2] = 1;
+//        field[14][8] = 1;
+//        field[14][15] = 1;
+//        //14th line
+//        field[15][2] = 1;
+//        field[15][3] = 1;
+//        field[15][4] = 1;
+//        field[15][5] = 1;
+//        field[15][6] = 1;
+//        field[15][8] = 1;
+//        field[15][9] = 1;
+//        field[15][10] = 1;
+//        field[15][11] = 1;
+//        field[15][12] = 1;
+//        field[15][13] = 1;
+//        field[15][14] = 1;
+//        field[15][15] = 1;
+//        field[15][17] = 1;
+//        //15th line
+//        field[16][6] = 1;
+//        field[16][11] = 1;
+//        field[16][17] = 1;
+//        //16thline
+//        field[17][1] = 1;
+//        field[17][2] = 1;
+//        field[17][4] = 1;
+//        field[17][6] = 1;
+//        field[17][7] = 1;
+//        field[17][8] = 1;
+//        field[17][9] = 1;
+//        field[17][11] = 1;
+//        field[17][13] = 1;
+//        field[17][14] = 1;
+//        field[17][15] = 1;
+//        field[17][16] = 1;
+//        field[17][17] = 1;
+//        //17th line
+//        field[18][2] = 1;
+//        field[18][4] = 1;
+//        field[18][7] = 1;
+//        field[18][9] = 1;
+//        field[18][11] = 1;
+//        field[18][17] = 1;
+//        //18yh line
+//        field[19][4] = 1;
+//        field[19][5] = 1;
+//        field[19][11] = 1;
+//        field[19][12] = 1;
+//        field[19][13] = 1;
+//        field[19][14] = 1;
+//        field[19][15] = 1;
+//        field[19][17] = 1;
+
+
     }
 
     public void wallCollision() {
-        if (field[y / 25][x / 25] == 1) {
+        if (field[y / 25-2][x / 25-1] == 1) {
             if (pressedA && pressedW) {
                 x = x + 1;
                 y = y + 1;
@@ -278,7 +268,7 @@ public class JavaGame extends JFrame implements Runnable {
                 x = x + 1;
             }
         }
-        if (field[y / 25][(x + 19) / 25] == 1) {
+        if (field[y / 25-2][(x + 19) / 25-1] == 1) {
             if (pressedD && pressedW) {
                 x = x - 1;
                 y = y + 1;
@@ -288,7 +278,7 @@ public class JavaGame extends JFrame implements Runnable {
                 x = x - 1;
             }
         }
-        if (field[(y + 19) / 25][x / 25] == 1) {
+        if (field[(y + 19) / 25-2][x / 25-1] == 1) {
             if (pressedA && pressedS) {
                 x = x + 1;
                 y = y - 1;
@@ -298,7 +288,7 @@ public class JavaGame extends JFrame implements Runnable {
                 x = x + 1;
             }
         }
-        if (field[(y + 19) / 25][(x + 19) / 25] == 1) {
+        if (field[(y + 19) / 25-2][(x + 19) / 25-1] == 1) {
             if (pressedD && pressedS) {
                 x = x - 1;
                 y = y - 1;
@@ -319,7 +309,7 @@ public class JavaGame extends JFrame implements Runnable {
     }
 
     public boolean checkWin() {
-        if (y >= 500 && y <= 525 && x >= 400 && x <= 425) {
+        if (y >= 525 && y <= 550 && x >= 475 && x <= 500) {
             return true;
         }
         return false;
@@ -378,7 +368,7 @@ public class JavaGame extends JFrame implements Runnable {
 
         //Game properties
         setTitle("Labirints");
-        setSize(500, 725);
+        setSize(525, 725);
         setResizable(false);
         setBackground(Color.lightGray);
         setLayout(null);
@@ -386,16 +376,15 @@ public class JavaGame extends JFrame implements Runnable {
         setVisible(true);
         addKeyListener(new ActionListener());
 
-        gamePanel.setSize(500, 725);
+        gamePanel.setSize(525, 725);
         add(gamePanel);
         gamePanel.setLayout(null);
         gamePanel.setVisible(true);
 
         makeGameField();
-        playSound();
 
-        x = 250;
-        y = 25;
+        x = 25;
+        y = 50;
 
     }
 

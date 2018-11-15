@@ -30,7 +30,7 @@ public class PaintScreen {
     int x, y;
     boolean win = false;
     String vards = "";
-    int field[][] =new int [21][20];
+    int field[][] =new int [19][19];
 
     public PaintScreen(Image player, int x, int y, JPanel game, boolean win, String vards, int field[][]) {
         this.player = player;
@@ -50,27 +50,48 @@ public class PaintScreen {
     
     public void paintComponent(Graphics g) {
         
-        for (int i=1; i<21;i++){
-            for (int k=0;k<20;k++){
+        for (int i=0;i<21;i++){
+            if (i!=1){
+                g.drawImage(wall,i*25,25,game);
+            }else{
+                g.drawImage(grass,i*25,25,game);
+            }
+        }
+        for (int i=0;i<21;i++){
+            if (i!=19){
+                g.drawImage(wall,i*25,525,game);
+            }else{
+                g.drawImage(grass,i*25,525,game);
+            }
+        }
+        for (int i=0;i<20;i++){
+                g.drawImage(wall,0,i*25+25,game);
+        }
+        for (int i=0;i<21;i++){
+                g.drawImage(wall,500,i*25+25,game);
+        }
+        
+        for (int i=0; i<19;i++){
+            for (int k=0;k<19;k++){
                 if (field[i][k]==1){
-                    g.drawImage(wall,k*25,i*25,game);
+                    g.drawImage(wall,k*25+25,i*25+50,game);
                 }else{
-                    g.drawImage(grass,k*25,i*25,game);
+                    g.drawImage(grass,k*25+25,i*25+50,game);
                 }
             }
         }
         
         g.setColor(Color.RED);
         g.setFont(new Font("default", Font.BOLD, 20));
-        g.drawImage(arrowDown, 250, 30, 25, 25, game);
-        g.drawImage(arrowDown, 400, 500, 25, 25, game);
+        g.drawImage(arrowDown, 25, 30, 25, 25, game);
+        g.drawImage(arrowDown, 475, 525, 25, 25, game);
         g.drawImage(player, x, y, 20, 20, game);
         
         if (win){
-            g.drawImage(fireworks, 0,525,500,225,game);
-            g.drawString("Lieliski! Tu palīdzēji " + vards + " atrast izeju!", 50,700);
+            g.drawImage(fireworks, 0,550,525,200,game);
+            g.drawString("Lieliski! Tu palīdzēji " + vards + " atrast izeju!", 75,710);
         }else{
-           g.drawString("Palīdzi atrast "+ vards + " izeju!", 100,650);
+           g.drawString("Palīdzi atrast "+ vards + " izeju!", 125,650);
         }
     }
 
